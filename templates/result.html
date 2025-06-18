@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>온라인 서점 도서 정보 분석</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <style>
+    body { margin: 30px; }
+    h2 { margin-top: 40px; }
+    .table { background: #fff; }
+  </style>
+</head>
+<body>
+  <h1>온라인 서점 도서 정보 분석</h1>
+  <p>총 수집 도서 수: <b>{{ total_count }}</b></p>
+  <form method="post" class="mb-3">
+    <input type="text" name="query" value="{{ query or '' }}">
+    <button type="submit" class="btn btn-primary btn-sm">검색</button>
+  </form>
+
+  <h2>검색 결과</h2>
+  {% if search_result is not none %}
+    {{ search_result|replace('<table', '<table class="table table-bordered"')|safe }}
+  {% endif %}
+
+  <h2>1년 이내 신간, 판매가 2만원 이하 도서</h2>
+  <p>(출간일, 판매가 기준 필터링)</p>
+  {% if new_books %}
+    {{ new_books|replace('<table', '<table class="table table-striped table-bordered"')|safe }}
+  {% else %}
+  <div class="alert alert-info">조건에 맞는 도서가 없습니다.</div>
+  {% endif %}
+
+  <h2>평점 4.5 이상 도서</h2>
+  {% if high_rating %}
+    {{ high_rating|replace('<table', '<table class="table table-striped table-bordered"')|safe }}
+  {% else %}
+  <div class="alert alert-info">평점 4.5 이상 도서가 없습니다.</div>
+  {% endif %}
+
+  <h2>판매지수 Top 5</h2>
+  {% if top_sales %}
+    {{ top_sales|replace('<table', '<table class="table table-striped table-bordered"')|safe }}
+  {% else %}
+  <div class="alert alert-info">판매지수 정보가 없습니다.</div>
+  {% endif %}
+
+  <p class="mt-5" style="color: #888; font-size: 0.9em;">
+    데이터는 알라딘 베스트셀러 기준, 실습용 예시입니다.<br>
+    코드 및 데이터 오류 발생 시 안내 메시지가 출력됩니다.
+  </p>
+</body>
+</html>
